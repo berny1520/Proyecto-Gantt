@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carta Gantt – Operador Jumbo Teniente</title>
+  <style>
+    :root {
+      --primary: #d9232d;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #222;
+      --text-muted: #666;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 20px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .gantt-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      align-items: baseline;
+    }
+
+    .gantt-header small {
+      color: var(--text-muted);
+    }
+
+    .gantt-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .gantt-label-header,
+    .gantt-time-header {
+      font-weight: bold;
+      padding: 6px 8px;
+      background: #e9edf5;
+      border-radius: 8px;
+    }
+
+    .gantt-label {
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #f8f9fc;
+    }
+
+    .gantt-row {
+      position: relative;
+      height: 26px;
+      border-radius: 6px;
+      background: #f8f9fc;
+      overflow: hidden;
+    }
+
+    .gantt-bar {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      border-radius: 6px;
+      background: var(--primary);
+      opacity: 0.85;
+    }
+
+    .gantt-bar span {
+      color: #fff;
+      font-size: 11px;
+      padding-left: 6px;
+      line-height: 18px;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .legend {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="gantt-header">
+      <h1>Carta Gantt – Programa Operador Jumbo (Teniente)</h1>
+      <small>Rango: 27-10-2025 al 20-11-2025</small>
+    </div>
+
+    <!-- Configuración de escala: 25 días (27-10 al 20-11) -->
+    <!-- Cada día = 100 / 25 = 4% de ancho -->
+
+    <div class="gantt-grid">
+      <div class="gantt-label-header">Tarea</div>
+      <div class="gantt-time-header">Línea de tiempo</div>
+
+      <!-- Fila 1 -->
+      <div class="gantt-label">
+        1. Planificación capacitación
+      </div>
+      <div class="gantt-row">
+        <!-- 27-10 al 31-10 (5 días) -> inicio 0 días -> left 0%, width 5 * 4 = 20% -->
+        <div class="gantt-bar" style="left:0%; width:20%;">
+          <span>27-10 al 31-10</span>
+        </div>
+      </div>
+
+      <!-- Fila 2 -->
+      <div class="gantt-label">
+        2. Instrumentos pre/post test
+      </div>
+      <div class="gantt-row">
+        <!-- Mismo rango 27-10 al 31-10 -->
+        <div class="gantt-bar" style="left:0%; width:20%;">
+          <span>27-10 al 31-10</span>
+        </div>
+      </div>
+
+      <!-- Fila 3 -->
+      <div class="gantt-label">
+        3. Convocatoria participantes
+      </div>
+      <div class="gantt-row">
+        <!-- 29-10 al 02-11 -> inicio día 2, fin día 7 -> left 8%, width 24% -->
+        <div class="gantt-bar" style="left:8%; width:24%;">
+          <span>29-10 al 02-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 4 -->
+      <div class="gantt-label">
+        4. Pre-test teórico
+      </div>
+      <div class="gantt-row">
+        <!-- 03-11 (1 día). Día 8 aprox. -> left 32%, width 4% -->
+        <div class="gantt-bar" style="left:32%; width:4%;">
+          <span>03-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 5 -->
+      <div class="gantt-label">
+        5. Capacitación teórica
+      </div>
+      <div class="gantt-row">
+        <!-- 03-11 (1 día) -->
+        <div class="gantt-bar" style="left:32%; width:4%;">
+          <span>03-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 6 -->
+      <div class="gantt-label">
+        6. Entrenamiento práctico
+      </div>
+      <div class="gantt-row">
+        <!-- 03-11 (1 día) -->
+        <div class="gantt-bar" style="left:32%; width:4%;">
+          <span>03-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 7 -->
+      <div class="gantt-label">
+        7. Post-test práctico
+      </div>
+      <div class="gantt-row">
+        <!-- 03-11 al 04-11 -> 2 días -> inicio día 8, fin día 9 -> left 32%, width 8% -->
+        <div class="gantt-bar" style="left:32%; width:8%;">
+          <span>03-11 al 04-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 8 -->
+      <div class="gantt-label">
+        8. Registro y consolidación
+      </div>
+      <div class="gantt-row">
+        <!-- 04-11 al 05-11 -> 2 días -> inicio día 9 -> left 36%, width 8% -->
+        <div class="gantt-bar" style="left:36%; width:8%;">
+          <span>04-11 al 05-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 9 -->
+      <div class="gantt-label">
+        9. Retroalimentación individual
+      </div>
+      <div class="gantt-row">
+        <!-- 05-11 al 07-11 -> 3 días -> inicio día 10 -> left 40%, width 12% -->
+        <div class="gantt-bar" style="left:40%; width:12%;">
+          <span>05-11 al 07-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 10 -->
+      <div class="gantt-label">
+        10. Plan regularización evaluaciones
+      </div>
+      <div class="gantt-row">
+        <!-- 06-11 al 14-11 -> 9 días -> inicio día 11 -> left 44%, width 36% -->
+        <div class="gantt-bar" style="left:44%; width:36%;">
+          <span>06-11 al 14-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 11 -->
+      <div class="gantt-label">
+        11. Segunda ventana práctica
+      </div>
+      <div class="gantt-row">
+        <!-- 10-11 al 14-11 -> 5 días -> inicio día 15 -> left 60%, width 20% -->
+        <div class="gantt-bar" style="left:60%; width:20%;">
+          <span>10-11 al 14-11</span>
+        </div>
+      </div>
+
+      <!-- Fila 12 -->
+      <div class="gantt-label">
+        12. Informe final y plan de mejora
+      </div>
+      <div class="gantt-row">
+        <!-- 17-11 al 20-11 -> 4 días -> inicio día 22 -> left 88%, width 16% (ajustado a escala simple) -->
+        <div class="gantt-bar" style="left:88%; width:16%;">
+          <span>17-11 al 20-11</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <p><strong>Nota:</strong> La escala de tiempo es aproximada y puede ajustarse según la cantidad real de días que quieras mostrar. Puedes modificar los valores <code>left</code> y <code>width</code> de cada barra para refinar el gráfico o adaptarlo a otro rango de fechas.</p>
+    </div>
+  </div>
+</body>
+</html>
