@@ -1,257 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Carta Gantt – Operador Jumbo Teniente</title>
-  <style>
+<meta charset="UTF-8" />
+<title>Carta Gantt – Capacitación Operador Jumbo</title>
+<style>
     :root {
-      --primary: #d9232d;
-      --bg: #f4f6f9;
-      --card-bg: #ffffff;
-      --text-main: #222;
-      --text-muted: #666;
+        --primary: #d9232d;
+        --bg: #f4f6f9;
+        --card-bg: #fff;
+        --text-main: #222;
+        --text-muted: #555;
     }
-
     * { box-sizing: border-box; }
-
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text-main);
-      padding: 20px;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        margin: 0;
+        padding: 20px;
     }
-
-    h1 {
-      margin-top: 0;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
     }
-
+    .header img {
+        height: 60px;
+    }
+    .filters {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    select {
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
     .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      max-width: 1100px;
-      margin: 0 auto;
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
-    .gantt-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      align-items: baseline;
-    }
-
-    .gantt-header small {
-      color: var(--text-muted);
-    }
-
     .gantt-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 8px;
-      font-size: 13px;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        row-gap: 8px;
     }
-
-    .gantt-label-header,
-    .gantt-time-header {
-      font-weight: bold;
-      padding: 6px 8px;
-      background: #e9edf5;
-      border-radius: 8px;
+    .gantt-header {
+        font-weight: bold;
+        background: #e9edf5;
+        padding: 8px;
+        border-radius: 6px;
     }
-
     .gantt-label {
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: #f8f9fc;
+        padding: 6px;
+        background: #f8f9fc;
+        border-radius: 6px;
     }
-
     .gantt-row {
-      position: relative;
-      height: 26px;
-      border-radius: 6px;
-      background: #f8f9fc;
-      overflow: hidden;
+        position: relative;
+        height: 26px;
+        background: #f1f3f9;
+        border-radius: 6px;
     }
-
     .gantt-bar {
-      position: absolute;
-      top: 4px;
-      bottom: 4px;
-      border-radius: 6px;
-      background: var(--primary);
-      opacity: 0.85;
+        position: absolute;
+        top: 4px;
+        bottom: 4px;
+        border-radius: 6px;
+        background: var(--primary);
+        color: #fff;
+        font-size: 11px;
+        padding-left: 6px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
     }
+</style>
 
-    .gantt-bar span {
-      color: #fff;
-      font-size: 11px;
-      padding-left: 6px;
-      line-height: 18px;
-      display: inline-block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+<script>
+function filtrarGantt() {
+    const contrato = document.getElementById("filtroContrato").value;
+    const tareas = document.querySelectorAll(".gantt-item");
 
-    .legend {
-      margin-top: 16px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-  </style>
+    tareas.forEach(item => {
+        if (contrato === "Todos" || item.dataset.contrato === contrato) {
+            item.style.display = "contents";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
+</script>
+
 </head>
 <body>
-  <div class="card">
-    <div class="gantt-header">
-      <h1>Carta Gantt – Programa Operador Jumbo (Teniente)</h1>
-      <small>Rango: 27-10-2025 al 20-11-2025</small>
+
+<div class="header">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg" alt="Logo">
+    <h2>Carta Gantt – Capacitación Operador Jumbo<br><small>Inicio: 03-11-2025</small></h2>
+</div>
+
+<!-- FILTROS -->
+<div class="filters">
+    <div>
+        <label>Contrato:</label><br>
+        <select id="filtroContrato" onchange="filtrarGantt()">
+            <option value="Todos">Todos</option>
+            <option value="Teniente">Teniente</option>
+            <option value="Andina">Andina</option>
+            <option value="Chuquicamata">Chuquicamata</option>
+        </select>
     </div>
+</div>
 
-    <!-- Configuración de escala: 25 días (27-10 al 20-11) -->
-    <!-- Cada día = 100 / 25 = 4% de ancho -->
-
+<div class="card">
     <div class="gantt-grid">
-      <div class="gantt-label-header">Tarea</div>
-      <div class="gantt-time-header">Línea de tiempo</div>
+        <div class="gantt-header">Tarea</div>
+        <div class="gantt-header">Línea de tiempo (escala desde 03-11-2025)</div>
 
-      <!-- Fila 1 -->
-      <div class="gantt-label">
-        1. Planificación capacitación
-      </div>
-      <div class="gantt-row">
-        <!-- 27-10 al 31-10 (5 días) -> inicio 0 días -> left 0%, width 5 * 4 = 20% -->
-        <div class="gantt-bar" style="left:0%; width:20%;">
-          <span>27-10 al 31-10</span>
+        <!-- 1. PLANIFICACIÓN -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            1. Planificación
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:0%; width:12%;">
+                03-11 al 05-11
+            </div>
+        </div>
 
-      <!-- Fila 2 -->
-      <div class="gantt-label">
-        2. Instrumentos pre/post test
-      </div>
-      <div class="gantt-row">
-        <!-- Mismo rango 27-10 al 31-10 -->
-        <div class="gantt-bar" style="left:0%; width:20%;">
-          <span>27-10 al 31-10</span>
+        <!-- 2. DETECCIÓN DE BRECHAS / FECHAS -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            2. Detección de brechas / Fechas
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:12%; width:12%;">
+                06-11 al 08-11
+            </div>
+        </div>
 
-      <!-- Fila 3 -->
-      <div class="gantt-label">
-        3. Convocatoria participantes
-      </div>
-      <div class="gantt-row">
-        <!-- 29-10 al 02-11 -> inicio día 2, fin día 7 -> left 8%, width 24% -->
-        <div class="gantt-bar" style="left:8%; width:24%;">
-          <span>29-10 al 02-11</span>
+        <!-- 3. CAPACITACIÓN TEÓRICA -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            3. Capacitación teórica
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:24%; width:6%;">
+                09-11
+            </div>
+        </div>
 
-      <!-- Fila 4 -->
-      <div class="gantt-label">
-        4. Pre-test teórico
-      </div>
-      <div class="gantt-row">
-        <!-- 03-11 (1 día). Día 8 aprox. -> left 32%, width 4% -->
-        <div class="gantt-bar" style="left:32%; width:4%;">
-          <span>03-11</span>
+        <!-- 4. PRE-TEST TEÓRICO -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            4. Pre-test teórico
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:30%; width:6%;">
+                10-11
+            </div>
+        </div>
 
-      <!-- Fila 5 -->
-      <div class="gantt-label">
-        5. Capacitación teórica
-      </div>
-      <div class="gantt-row">
-        <!-- 03-11 (1 día) -->
-        <div class="gantt-bar" style="left:32%; width:4%;">
-          <span>03-11</span>
+        <!-- 5. POST-TEST PRÁCTICO -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            5. Post-test práctico
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:36%; width:12%;">
+                11-11 al 13-11
+            </div>
+        </div>
 
-      <!-- Fila 6 -->
-      <div class="gantt-label">
-        6. Entrenamiento práctico
-      </div>
-      <div class="gantt-row">
-        <!-- 03-11 (1 día) -->
-        <div class="gantt-bar" style="left:32%; width:4%;">
-          <span>03-11</span>
+        <!-- 6. CERTIFICACIÓN -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            6. Certificación
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:48%; width:10%;">
+                14-11 al 15-11
+            </div>
+        </div>
 
-      <!-- Fila 7 -->
-      <div class="gantt-label">
-        7. Post-test práctico
-      </div>
-      <div class="gantt-row">
-        <!-- 03-11 al 04-11 -> 2 días -> inicio día 8, fin día 9 -> left 32%, width 8% -->
-        <div class="gantt-bar" style="left:32%; width:8%;">
-          <span>03-11 al 04-11</span>
+        <!-- 7. CIERRE DE BRECHAS POST CERTIFICACIÓN -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            7. Cierre de brechas post certificación
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:58%; width:16%;">
+                16-11 al 19-11
+            </div>
+        </div>
 
-      <!-- Fila 8 -->
-      <div class="gantt-label">
-        8. Registro y consolidación
-      </div>
-      <div class="gantt-row">
-        <!-- 04-11 al 05-11 -> 2 días -> inicio día 9 -> left 36%, width 8% -->
-        <div class="gantt-bar" style="left:36%; width:8%;">
-          <span>04-11 al 05-11</span>
+        <!-- 8. INFORME FINAL -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            8. Informe final
         </div>
-      </div>
+        <div class="gantt-row gantt-item" data-contrato="Teniente">
+            <div class="gantt-bar" style="left:74%; width:10%;">
+                20-11 al 21-11
+            </div>
+        </div>
 
-      <!-- Fila 9 -->
-      <div class="gantt-label">
-        9. Retroalimentación individual
-      </div>
-      <div class="gantt-row">
-        <!-- 05-11 al 07-11 -> 3 días -> inicio día 10 -> left 40%, width 12% -->
-        <div class="gantt-bar" style="left:40%; width:12%;">
-          <span>05-11 al 07-11</span>
-        </div>
-      </div>
-
-      <!-- Fila 10 -->
-      <div class="gantt-label">
-        10. Plan regularización evaluaciones
-      </div>
-      <div class="gantt-row">
-        <!-- 06-11 al 14-11 -> 9 días -> inicio día 11 -> left 44%, width 36% -->
-        <div class="gantt-bar" style="left:44%; width:36%;">
-          <span>06-11 al 14-11</span>
-        </div>
-      </div>
-
-      <!-- Fila 11 -->
-      <div class="gantt-label">
-        11. Segunda ventana práctica
-      </div>
-      <div class="gantt-row">
-        <!-- 10-11 al 14-11 -> 5 días -> inicio día 15 -> left 60%, width 20% -->
-        <div class="gantt-bar" style="left:60%; width:20%;">
-          <span>10-11 al 14-11</span>
-        </div>
-      </div>
-
-      <!-- Fila 12 -->
-      <div class="gantt-label">
-        12. Informe final y plan de mejora
-      </div>
-      <div class="gantt-row">
-        <!-- 17-11 al 20-11 -> 4 días -> inicio día 22 -> left 88%, width 16% (ajustado a escala simple) -->
-        <div class="gantt-bar" style="left:88%; width:16%;">
-          <span>17-11 al 20-11</span>
-        </div>
-      </div>
     </div>
+</div>
 
-    <div class="legend">
-      <p><strong>Nota:</strong> La escala de tiempo es aproximada y puede ajustarse según la cantidad real de días que quieras mostrar. Puedes modificar los valores <code>left</code> y <code>width</code> de cada barra para refinar el gráfico o adaptarlo a otro rango de fechas.</p>
-    </div>
-  </div>
 </body>
 </html>
