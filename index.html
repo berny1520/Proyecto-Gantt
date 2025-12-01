@@ -25,9 +25,7 @@
         margin-bottom: 20px;
     }
     .header img {
-        height: 70px;
-        border-radius: 6px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        height: 75px;
     }
     .filters {
         display: flex;
@@ -63,8 +61,8 @@
     }
     .gantt-row {
         position: relative;
-        height: 26px;
-        background: #f1f3f9;
+        height: 28px;
+        background: #eef1f7;
         border-radius: 6px;
     }
     .gantt-bar {
@@ -101,12 +99,12 @@ function filtrarGantt() {
 <body>
 
 <div class="header">
-    <!-- LOGO INCORPORADO (Imagen entregada por usted, convertida a base64) -->
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAYAAAA+7..." alt="logo_Xtreme">
-    
+    <!-- LOGO EXTREME BASE64 -->
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..." />
+
     <h2>
         Carta Gantt – Capacitación Operador Jumbo<br>
-        <small>Inicio: 04-11-2025</small>
+        <small>Línea de tiempo desde 04-11-2025</small>
     </h2>
 </div>
 
@@ -126,85 +124,77 @@ function filtrarGantt() {
 <div class="card">
     <div class="gantt-grid">
         <div class="gantt-header">Tarea</div>
-        <div class="gantt-header">Línea de tiempo (desde 04-11-2025)</div>
+        <div class="gantt-header">Línea de tiempo (rango 04-11-2025 → 18-02-2026)</div>
 
         <!-- 1. PLANIFICACIÓN -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            1. Planificación
-        </div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">1. Planificación</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:0%; width:12%;">
-                04-11 al 15-11
+            <div class="gantt-bar"
+                 style="left:0%; width:12%;">
+                 04-11 al 15-11
             </div>
         </div>
 
-        <!-- 2. DETECCIÓN BRECHAS -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            2. Detección de brechas / Fechas
-        </div>
+        <!-- 2. DETECCIÓN DE BRECHAS -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">2. Detección de brechas / Fechas</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:12%; width:12%;">
-                16-11 al 12-12
+            <div class="gantt-bar"
+                 style="left:12%; width:32%;">
+                 16-11 al 12-12
             </div>
         </div>
 
         <!-- 3. CAPACITACIÓN TEÓRICA -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            3. Capacitación teórica
-        </div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">3. Capacitación teórica</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:24%; width:6%;">
-                13-12
+            <div class="gantt-bar"
+                 style="left:44%; width:4%;">
+                 13-12
             </div>
         </div>
 
-        <!-- 4. PRE-TEST -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            4. Pre-test teórico
-        </div>
+        <!-- 4. PRE TEST -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">4. Pre-test teórico</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:30%; width:6%;">
-                14-12
+            <div class="gantt-bar"
+                 style="left:48%; width:4%;">
+                 14-12
             </div>
         </div>
 
-        <!-- 5. POST-TEST -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            5. Post-test práctico
-        </div>
+        <!-- 5. POST TEST -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">5. Post-test práctico</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:36%; width:12%;">
-                15-12 al 29-12
+            <div class="gantt-bar"
+                 style="left:52%; width:22%;">
+                 15-12 al 29-12
             </div>
         </div>
 
         <!-- 6. CERTIFICACIÓN -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            6. Certificación
-        </div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">6. Certificación</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:48%; width:10%;">
-                30-12 al 15-01-2026
+            <div class="gantt-bar"
+                 style="left:74%; width:14%;">
+                 30-12 al 15-01-2026
             </div>
         </div>
 
         <!-- 7. CIERRE DE BRECHAS -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            7. Cierre de brechas post certificación
-        </div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">7. Cierre de brechas post certificación</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:58%; width:16%;">
-                16-01 al 15-02-2026
+            <div class="gantt-bar"
+                 style="left:88%; width:22%;">
+                 16-01 al 15-02-2026
             </div>
         </div>
 
         <!-- 8. INFORME FINAL -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">
-            8. Informe final
-        </div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">8. Informe final</div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:74%; width:10%;">
-                16-02 al 18-02-2026
+            <div class="gantt-bar"
+                 style="left:110%; width:6%;">
+                 16-02 al 18-02-2026
             </div>
         </div>
 
