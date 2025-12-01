@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <title>Dashboard – Capacitación Operador Jumbo</title>
 
-<!-- Libraries for PDF Export -->
+<!-- Librería para exportar a PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <style>
@@ -23,29 +23,68 @@
 /* ------------------ GENERAL ------------------ */
 * { box-sizing: border-box; }
 body {
-    margin: 0; padding: 20px;
+    margin: 0;
+    padding: 20px;
     font-family: Arial, sans-serif;
     background: var(--bg);
     color: var(--text-main);
 }
 
 .header {
-    display: flex; justify-content: space-between;
-    align-items: center; margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
     flex-wrap: wrap;
+    gap: 10px;
 }
-.header img { height: 75px; }
+.header img {
+    height: 75px;
+}
 
+/* ------------------ KPIs ------------------ */
+.kpi-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.kpi-card {
+    flex: 1 1 160px;
+    min-width: 160px;
+    background: var(--card-bg);
+    padding: 12px 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.kpi-label {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.kpi-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ------------------ CARDS ------------------ */
 .card {
     background: var(--card-bg);
-    padding: 20px; border-radius: 16px;
+    padding: 20px;
+    border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     margin-bottom: 20px;
 }
 
+/* ------------------ FILTROS ------------------ */
 .filters {
-    display: flex; flex-wrap: wrap;
-    gap: 16px; margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+.filters label {
+    font-size: 13px;
+    color: var(--text-muted);
 }
 select {
     padding: 8px 14px;
@@ -63,7 +102,8 @@ select {
 
 .gantt-header {
     background: #e9edf5;
-    padding: 10px; font-weight: bold;
+    padding: 10px;
+    font-weight: bold;
     border-radius: 8px;
 }
 
@@ -71,6 +111,7 @@ select {
     padding: 10px;
     background: #f8f9fc;
     border-radius: 8px;
+    font-size: 13px;
 }
 
 .gantt-row {
@@ -78,34 +119,66 @@ select {
     height: 32px;
     background: #eef1f7;
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .gantt-bar {
     position: absolute;
-    top: 4px; bottom: 4px;
+    top: 4px;
+    bottom: 4px;
     border-radius: 8px;
     color: #fff;
     font-size: 12px;
-    display: flex; align-items: center;
-    padding-left: 8px; white-space: nowrap;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    white-space: nowrap;
     transition: all .3s ease;
 }
 
+/* barra interna que indica % de avance */
 .progress {
-    height: 6px; background: rgba(255,255,255,0.4);
-    border-radius: 4px; position: absolute;
-    right: 6px; bottom: 6px; width: 60%;
+    height: 6px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 4px;
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 60%;
 }
 
-/* ----------------- COLORS BY CONTRACT ----------------- */
+/* ----------------- COLORES POR CONTRATO ----------------- */
 [data-contrato="Teniente"] .gantt-bar { background: var(--teniente); }
 [data-contrato="Andina"] .gantt-bar { background: var(--andina); }
 [data-contrato="Chuquicamata"] .gantt-bar { background: var(--chuqui); }
 
+/* ----------------- BOTÓN PDF ----------------- */
+.btn-pdf {
+    padding: 12px 20px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
 /* --------------------- RESPONSIVE --------------------- */
-@media(max-width: 900px) {
-    .gantt-grid { grid-template-columns: 1fr; }
-    .gantt-row { height: 40px; }
+@media (max-width: 900px) {
+    body {
+        padding: 10px;
+    }
+    .gantt-grid {
+        grid-template-columns: 1fr;
+    }
+    .gantt-row {
+        height: 40px;
+    }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 </style>
 
@@ -126,8 +199,15 @@ function filtrar() {
 
 /* ------- EXPORTAR PDF ------- */
 function exportarPDF() {
-    const element = document.getElementById("exportar");
-    html2pdf().from(element).save("Gantt_Capacitacion.pdf");
+    const element = document.getElementById("area-exportar");
+    const opt = {
+        margin:       0.5,
+        filename:     'Gantt_Capacitacion_Operador_Jumbo.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+    };
+    html2pdf().set(opt).from(element).save();
 }
 </script>
 
@@ -136,16 +216,37 @@ function exportarPDF() {
 
 <!-- --------------------------- HEADER --------------------------- -->
 <div class="header">
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..." />
-    <h1>Dashboard – Capacitación Operador Jumbo<br>
-        <small>Línea de tiempo desde 04-11-2025</small>
-    </h1>
+    <!-- 👉 Reemplaza logo_extreme.png por la ruta real de tu logo si lo necesitas -->
+    <img src="logo_extreme.png" alt="Extreme Mining Ltda.">
+    <div>
+        <h1 style="margin:0;">Dashboard – Capacitación Operador Jumbo</h1>
+        <small>Línea de tiempo: 04-11-2025 al 18-02-2026</small>
+    </div>
 </div>
 
+<!-- --------------------------- KPIs --------------------------- -->
+<div class="kpi-container">
+    <div class="kpi-card">
+        <div class="kpi-label">Operadores convocados</div>
+        <div class="kpi-value">13</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Operadores con post-test registrado</div>
+        <div class="kpi-value">4</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">% con evaluación registrada</div>
+        <div class="kpi-value">31%</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Tareas del plan</div>
+        <div class="kpi-value">8</div>
+    </div>
+</div>
 
 <!-- --------------------------- FILTROS --------------------------- -->
 <div class="card">
-    <h2>Filtros</h2>
+    <h2 style="margin-top:0;">Filtros</h2>
     <div class="filters">
         <div>
             <label>Contrato</label><br>
@@ -159,74 +260,112 @@ function exportarPDF() {
     </div>
 </div>
 
-<!-- --------------------------- GANTT --------------------------- -->
-<div class="card" id="exportar">
+<!-- --------------------------- GANTT + CONTENIDO EXPORTABLE --------------------------- -->
+<div class="card" id="area-exportar">
+    <h2 style="margin-top:0;">Carta Gantt – Programa de Certificación Operador Jumbo</h2>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:0;">
+        Escala simplificada desde 04-11-2025 a 18-02-2026. Cada barra refleja la duración de la tarea y el
+        recuadro blanco al interior de la barra representa el % de avance estimado.
+    </p>
+
     <div class="gantt-grid">
 
         <div class="gantt-header">Tarea</div>
         <div class="gantt-header">Línea de tiempo</div>
 
         <!-- 1. PLANIFICACIÓN -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">1. Planificación</div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            1. Planificación
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:0%; width:12%;">04-11 al 15-11
-                <div class="progress" style="width:80%"></div>
+            <!-- 04-11 al 15-11 -->
+            <div class="gantt-bar" style="left:0%; width:12%;">
+                04-11 al 15-11
+                <div class="progress" style="width:80%;"></div>
             </div>
         </div>
 
-        <!-- 2. DETECCIÓN DE BRECHAS -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">2. Detección de brechas / Fechas</div>
+        <!-- 2. DETECCIÓN DE BRECHAS / FECHAS -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            2. Detección de brechas / Fechas
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:12%; width:32%;">16-11 al 12-12
-                <div class="progress" style="width:40%"></div>
+            <!-- 16-11 al 12-12 -->
+            <div class="gantt-bar" style="left:12%; width:32%;">
+                16-11 al 12-12
+                <div class="progress" style="width:40%;"></div>
             </div>
         </div>
 
         <!-- 3. CAPACITACIÓN TEÓRICA -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">3. Capacitación teórica</div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            3. Capacitación teórica
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:44%; width:4%;">13-12
-                <div class="progress" style="width:100%"></div>
+            <!-- 13-12 -->
+            <div class="gantt-bar" style="left:44%; width:4%;">
+                13-12
+                <div class="progress" style="width:100%;"></div>
             </div>
         </div>
 
-        <!-- 4. PRE TEST -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">4. Pre-test teórico</div>
+        <!-- 4. PRE-TEST TEÓRICO -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            4. Pre-test teórico
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:48%; width:4%;">14-12
-                <div class="progress" style="width:100%"></div>
+            <!-- 14-12 -->
+            <div class="gantt-bar" style="left:48%; width:4%;">
+                14-12
+                <div class="progress" style="width:100%;"></div>
             </div>
         </div>
 
-        <!-- 5. POST TEST -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">5. Post-test práctico</div>
+        <!-- 5. POST-TEST PRÁCTICO -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            5. Post-test práctico
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:52%; width:22%;">15-12 al 29-12
-                <div class="progress" style="width:65%"></div>
+            <!-- 15-12 al 29-12 -->
+            <div class="gantt-bar" style="left:52%; width:22%;">
+                15-12 al 29-12
+                <div class="progress" style="width:65%;"></div>
             </div>
         </div>
 
         <!-- 6. CERTIFICACIÓN -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">6. Certificación</div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            6. Certificación
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:74%; width:14%;">30-12 al 15-01-2026
-                <div class="progress" style="width:30%"></div>
+            <!-- 30-12 al 15-01-2026 -->
+            <div class="gantt-bar" style="left:74%; width:14%;">
+                30-12 al 15-01-2026
+                <div class="progress" style="width:30%;"></div>
             </div>
         </div>
 
-        <!-- 7. CIERRE BRECHAS -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">7. Cierre de brechas post certificación</div>
+        <!-- 7. CIERRE DE BRECHAS POST CERTIFICACIÓN -->
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            7. Cierre de brechas post certificación
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:88%; width:22%;">16-01 al 15-02-2026
-                <div class="progress" style="width:20%"></div>
+            <!-- 16-01 al 15-02-2026 -->
+            <div class="gantt-bar" style="left:88%; width:22%;">
+                16-01 al 15-02-2026
+                <div class="progress" style="width:20%;"></div>
             </div>
         </div>
 
         <!-- 8. INFORME FINAL -->
-        <div class="gantt-label gantt-item" data-contrato="Teniente">8. Informe final</div>
+        <div class="gantt-label gantt-item" data-contrato="Teniente">
+            8. Informe final
+        </div>
         <div class="gantt-row gantt-item" data-contrato="Teniente">
-            <div class="gantt-bar" style="left:110%; width:6%;">16-02 al 18-02-2026
-                <div class="progress" style="width:10%"></div>
+            <!-- 16-02 al 18-02-2026 -->
+            <div class="gantt-bar" style="left:110%; width:6%;">
+                16-02 al 18-02-2026
+                <div class="progress" style="width:10%;"></div>
             </div>
         </div>
 
@@ -234,10 +373,8 @@ function exportarPDF() {
 </div>
 
 <!-- -------------------- BOTÓN PDF -------------------- -->
-<button onclick="exportarPDF()" 
-        style="padding:12px 20px; background:var(--primary); color:#fff;
-               border:none; border-radius:10px; font-size:16px; cursor:pointer;">
-    Descargar PDF
+<button class="btn-pdf" onclick="exportarPDF()">
+    Descargar Gantt en PDF
 </button>
 
 </body>
